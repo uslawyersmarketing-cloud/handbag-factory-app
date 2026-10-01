@@ -1,0 +1,57 @@
+name: Build Handbag Factory APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore Android source
+        shell: bash
+        run: |
+          cat build_payload/payload_00.b64 build_payload/payload_01.b64 > payload.b64
+          base64 --decode payload.b64 > payload.zip
+          unzip -o payload.zip
+          rm -f payload.b64 payload.zip
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Install Android SDK 35
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Build debug APK
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Rename APK
+        shell: bash
+        run: cp app/build/outputs/apk/debug/app-debug.apk HandbagFactoryManager-v1.0.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: handbag-factory-apk
+          path: HandbagFactoryManager-v1.0.apk
+          if-no-files-found: error
+          retention-days: 30
