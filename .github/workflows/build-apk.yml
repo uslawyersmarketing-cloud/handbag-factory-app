@@ -3,8 +3,6 @@ name: Build Handbag Factory APK
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -21,7 +19,7 @@ jobs:
       - name: Restore Android source
         shell: bash
         run: |
-          cat build_payload/payload_00.b64 build_payload/payload_01.b64 build_payload/payload_02.b64 build_payload/payload_03.b64 > payload.b64
+          cat build_payload/payload_00.b64 build_payload/payload_01.b64 > payload.b64
           base64 --decode payload.b64 > payload.zip
           unzip -o payload.zip
           rm -f payload.b64 payload.zip
@@ -54,12 +52,12 @@ jobs:
 
       - name: Rename APK
         shell: bash
-        run: cp handbag_factory_android/app/build/outputs/apk/debug/app-debug.apk HandbagFactoryManager-v1.0.apk
+        run: cp handbag_factory_android/app/build/outputs/apk/debug/app-debug.apk HandbagFactoryManager-v1.1-UI.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: handbag-factory-apk
-          path: HandbagFactoryManager-v1.0.apk
+          name: handbag-factory-ui-apk
+          path: HandbagFactoryManager-v1.1-UI.apk
           if-no-files-found: error
           retention-days: 30
