@@ -15,9 +15,5 @@ jobs:
         run: |
           base64 --decode patch_v13/MainActivity.java.gz.b64 | gzip -d > MainActivity.java
           base64 --decode patch_v13/FactoryDb.java.gz.b64 | gzip -d > FactoryDb.java
-          echo "=== METHODS ==="
-          grep -nE "void (show|add|open|edit)|onBackPressed|OnBackPressed|addExpense|addAdvance|addDispatch|addProduction|addBrand|addWorker|addPayment|showWorkers|showExpenses|showDashboard|showProduction|showMaterials|showReports|showOrders" MainActivity.java || true
-          echo "=== SCREENS / NAV ==="
-          grep -nE "setContentView|render|screen|currentScreen|dashboard|Dashboard|header|toolbar|ScrollView|EditText|setSoftInputMode" MainActivity.java | head -n 250 || true
-          echo "=== DB METHODS ==="
-          grep -nE "public (long|int|Cursor|double|String)|delete|update|insert" FactoryDb.java || true
+          echo "=== SOURCE 1-220 ==="
+          sed -n '1,220p' MainActivity.java
