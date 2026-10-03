@@ -19,10 +19,9 @@ jobs:
       - name: Restore Android source
         shell: bash
         run: |
-          cat build_payload/payload_00.b64 build_payload/payload_01.b64 build_payload/payload_02.b64 build_payload/payload_03.b64 build_payload/payload_04.b64 build_payload/payload_05.b64 build_payload/payload_06.b64 > payload.b64
+          cat build_payload/payload_00.b64 build_payload/payload_01.b64 build_payload/payload_02.b64 build_payload/payload_03.b64 build_payload/payload_04.b64 > payload.b64
           base64 --decode payload.b64 > payload.zip
           unzip -o payload.zip
-          sed -i 's/ b.setTextAllCaps(false);//' handbag_factory_android/app/src/main/java/com/factory/handbag/MainActivity.java
           rm -f payload.b64 payload.zip
 
       - name: Set up Java 17
@@ -53,12 +52,12 @@ jobs:
 
       - name: Rename APK
         shell: bash
-        run: cp handbag_factory_android/app/build/outputs/apk/debug/app-debug.apk HandbagFactoryManager-v1.1-UI.apk
+        run: cp handbag_factory_android/app/build/outputs/apk/debug/app-debug.apk HandbagFactoryManager-v1.2-Audit.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: handbag-factory-ui-apk
-          path: HandbagFactoryManager-v1.1-UI.apk
+          name: handbag-factory-v1-2-apk
+          path: HandbagFactoryManager-v1.2-Audit.apk
           if-no-files-found: error
           retention-days: 30
