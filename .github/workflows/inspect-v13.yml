@@ -15,5 +15,5 @@ jobs:
         run: |
           base64 --decode patch_v13/MainActivity.java.gz.b64 | gzip -d > MainActivity.java
           base64 --decode patch_v13/FactoryDb.java.gz.b64 | gzip -d > FactoryDb.java
-          echo "=== SOURCE 1-220 ==="
-          sed -n '1,220p' MainActivity.java
+          echo "=== FACTORYDB ==="
+          cat FactoryDb.java
