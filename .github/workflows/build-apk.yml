@@ -23,6 +23,8 @@ jobs:
           base64 --decode payload.b64 > payload.zip
           unzip -o payload.zip || true
           cp patch_v12/FactoryDb.java handbag_factory_android/app/src/main/java/com/factory/handbag/FactoryDb.java
+          sed -i '90a\\    }' handbag_factory_android/app/src/main/java/com/factory/handbag/MainActivity.java
+          sed -i '97a\\    }' handbag_factory_android/app/src/main/java/com/factory/handbag/MainActivity.java
           rm -f payload.b64 payload.zip
 
       - name: Set up Java 17
